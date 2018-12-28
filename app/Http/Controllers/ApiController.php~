@@ -1,0 +1,9 @@
+<?php
+
+class ApiController extends BaseController
+{
+    public function testcontroller($id)
+    {
+        return view('test');
+    }
+}
