@@ -10,6 +10,10 @@ class ApiController extends BaseController
 {
     public function testcontroller($id)
     {
-        return view('test');
+        echo 'id is:' . $id;
+        echo '<br>';
+
+	$data['id'] = $id;
+        return view('test', $data);
     }
 }
