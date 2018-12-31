@@ -14,6 +14,13 @@ class ApiController extends BaseController
         echo '<br>';
 
 	$data['id'] = $id;
+
+	$users = DB::select ('select * from users');
+
+	print_r($users);
+
+	echo $users->id;
+	
         return view('test', $data);
     }
 }
