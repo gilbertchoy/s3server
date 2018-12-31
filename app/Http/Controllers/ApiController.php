@@ -5,6 +5,10 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
+
+use App\Http\Controllers\Controller;
+
 
 class ApiController extends BaseController
 {
@@ -15,11 +19,14 @@ class ApiController extends BaseController
 
 	$data['id'] = $id;
 
-	$users = DB::select ('select * from users');
+	//$users = DB::select ('select * from users');
+	//$users = DB::connection('pgsql')->select('select * from users');
+	$result = DB::connection('pgsql')->select(DB::raw("select * from users"));
 
-	print_r($users);
 
-	echo $users->id;
+
+	print_r($result);
+
 	
         return view('test', $data);
     }

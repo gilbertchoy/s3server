@@ -1,5 +1,7 @@
 <?php
 
+//$PGSQL_DATABASE_URL = parse_url(getenv("http://127.0.0.1:57468"));
+
 return [
 
     /*
@@ -13,7 +15,8 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    //'default' => env('DB_CONNECTION', 'mysql'),  //original
+    'default' => env('DB_CONNECTION', 'pgsql'),  //bert
 
     /*
     |--------------------------------------------------------------------------
@@ -56,19 +59,39 @@ return [
             'engine' => null,
         ],
 
+	/*
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'username' => 'destructo',
+            'password' => 'pgpgdb1',
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+	*/
+
+	//bert added start
+	'pgsql' => [
+            'driver' => 'pgsql',
+            'host' => $PGSQL_DATABASE_URL["host"],
+            'port' => $PGSQL_DATABASE_URL["port"],
+            'database' => ltrim($PGSQL_DATABASE_URL["path"], "/"),
+            'username' => $PGSQL_DATABASE_URL["user"],
+            'password' => $PGSQL_DATABASE_URL["pass"],
+	    //'username' => $PGSQL_DATABASE_URL["destructo"],
+            //'password' => $PGSQL_DATABASE_URL["pgpgdb1"],
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+	//bert added end
 
         'sqlsrv' => [
             'driver' => 'sqlsrv',

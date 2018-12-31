@@ -1,6 +1,6 @@
 <?php
 
-$PGSQL_DATABASE_URL = parse_url(getenv("postgresql://localhost"));
+$PGSQL_DATABASE_URL = parse_url("postgres://destructo:pgpgdb1@localhost:5432/destructo");
 
 return [
 
@@ -65,8 +65,8 @@ return [
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
             'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'username' => 'destructo',
+            'password' => 'pgpgdb1',
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
@@ -83,6 +83,8 @@ return [
             'database' => ltrim($PGSQL_DATABASE_URL["path"], "/"),
             'username' => $PGSQL_DATABASE_URL["user"],
             'password' => $PGSQL_DATABASE_URL["pass"],
+	    //'username' => $PGSQL_DATABASE_URL["destructo"],
+            //'password' => $PGSQL_DATABASE_URL["pgpgdb1"],
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
