@@ -29,4 +29,6 @@ Route::get('/teststring/{id}/comment/{comment}', function ($id, $comment) {
 
 Route::get('testicles/{id}', 'ApiController@testcontroller');
 
-Route::get('playad/', 'ApiController@playad');
+Route::post('playad/', 'ApiController@playad');
+
+
