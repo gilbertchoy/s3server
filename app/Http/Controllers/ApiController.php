@@ -13,12 +13,13 @@ use App\Http\Controllers\Controller;
 
 class ApiController extends BaseController
 {
+
     public function playad(Request $request)
     {
         $model = $request->input('model');
 	//echo "model: " . $model;
-	$data['model'] = 'this is model'
-	return view('playad', $data)
+	$data['model'] = 'this is model';
+	return view('playad', $data);
 
     }
 
