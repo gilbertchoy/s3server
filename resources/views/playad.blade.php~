@@ -1,0 +1,8 @@
+<html>
+test my ness
+
+<br>
+<br>
+view is: <?php echo "playad"; ?>
+
+</html>

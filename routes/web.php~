@@ -26,3 +26,5 @@ Route::get('/test/{id}', function ($id) {
 Route::get('/teststring/{id}/comment/{comment}', function ($id, $comment) {
     return 'User ' . $id . '  ' . $comment;
 });
+
+Route::get('testicles/{id}', 'ApiController@testcontroller');
