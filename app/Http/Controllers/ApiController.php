@@ -20,7 +20,9 @@ class ApiController extends BaseController
 	//echo "model: " . $model;
 	$data['model'] = 'this is model';
 
-	$name = $request->input('testkey');
+	$user = $request->input('testkey');
+
+	$result = DB::connection('pgsql')->select(DB::raw("insert into users (deviceuid) values ('".$user."')"));
 
 	echo $name;
 
