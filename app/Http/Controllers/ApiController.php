@@ -19,7 +19,19 @@ class ApiController extends BaseController
         $model = $request->input('model');
 	//echo "model: " . $model;
 	$data['model'] = 'this is model';
+
+	$name = $request->input('testkey');
+
+	echo $name;
+
 	return view('playad', $data);
+
+/* works
+	return response()->json([
+    'name' => 'Abigail',
+    'state' => 'CA'
+]);
+*/
 
     }
 
