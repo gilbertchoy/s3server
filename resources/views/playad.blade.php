@@ -1,4 +1,11 @@
 <html>
+
+
+<form method="POST" action="/profile">
+    @csrf
+
+</form>
+
 test my ness
 
 <br>

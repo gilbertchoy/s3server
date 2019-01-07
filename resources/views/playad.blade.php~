@@ -3,6 +3,6 @@ test my ness
 
 <br>
 <br>
-view is: <?php echo "playad"; ?>
+view is: <?php echo $model; ?>
 
 </html>
