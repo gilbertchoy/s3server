@@ -16,15 +16,13 @@ class ApiController extends BaseController
 
     public function playad(Request $request)
     {
-        $model = $request->input('model');
-	//echo "model: " . $model;
 	$data['model'] = 'this is model';
 
 	$user = $request->input('testkey');
 
 	$result = DB::connection('pgsql')->select(DB::raw("insert into users (deviceuid) values ('".$user."')"));
 
-	echo $name;
+	echo $user;
 
 	return view('playad', $data);
 
