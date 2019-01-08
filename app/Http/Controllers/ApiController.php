@@ -37,7 +37,7 @@ class ApiController extends BaseController
     public function create(Request $request){
         $model = $request->input('model');
 
-	$result = DB::table('users')->insert(['deviceuid' => $model);
+	$result = DB::table('users')->insert(['deviceuid' => $model]);
 
 	print_r($result);
 
