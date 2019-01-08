@@ -40,11 +40,16 @@ class ApiController extends BaseController
 	$result = DB::table('users')->insert(['deviceuid' => $model]);
 
 	print_r($result);
-
     }
 
     public function testcontroller($id)
     {
+
+	$result = DB::table('users')->where('deviceuid', 'test')->exists();
+	print_r($result);
+
+
+	/*
         echo 'id is:' . $id;
         echo '<br>';
 
@@ -54,11 +59,9 @@ class ApiController extends BaseController
 	//$users = DB::connection('pgsql')->select('select * from users');
 	$result = DB::connection('pgsql')->select(DB::raw("select * from users"));
 
-
-
 	print_r($result);
-
 	
         return view('test', $data);
+	*/
     }
 }
