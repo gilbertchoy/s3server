@@ -27,8 +27,9 @@ Route::get('/teststring/{id}/comment/{comment}', function ($id, $comment) {
     return 'User ' . $id . '  ' . $comment;
 });
 
+//works id is required
 Route::get('testicles/{id}', 'ApiController@testcontroller');
 
-Route::post('playad/', 'ApiController@playad');
+
 
 
