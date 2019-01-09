@@ -37,10 +37,16 @@ class ApiController extends BaseController
     public function create(Request $request){
         $model = $request->input('model');
 
-	$result = DB::table('users')->insert(['deviceuid' => $model]);
+	//$result = DB::table('users')->insert(['deviceuid' => $model]);
 	//$result = DB::table('users')->insert(var_dump($request));	
 
-	$result1 = DB::table('users')->where('deviceuid', 'test')->exists();
+	$result = DB::table('users')->where('deviceuid', $model)->exists();
+	if($result == 1){
+            echo "deviceuid exists";
+	}
+	else{
+	    echo "deviceuid DNE";
+	}
 
 
 	print_r($result1);
