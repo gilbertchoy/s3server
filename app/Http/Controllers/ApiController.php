@@ -40,7 +40,10 @@ class ApiController extends BaseController
 	$result = DB::table('users')->insert(['deviceuid' => $model]);
 	//$result = DB::table('users')->insert(var_dump($request));	
 
-	print_r($result);
+	$result1 = DB::table('users')->where('deviceuid', 'test')->exists();
+
+
+	print_r($result1);
     }
 
     public function testcontroller($id)
