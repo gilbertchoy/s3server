@@ -35,21 +35,35 @@ class ApiController extends BaseController
     }
 
     public function create(Request $request){
+        function generateRandomString($length = 32) {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $charactersLength = strlen($characters);
+            $randomString = '';
+            for ($i = 0; $i < $length; $i++) {
+                $randomString .= $characters[rand(0, $charactersLength - 1)];
+            }
+            return $randomString;
+	}
+
+    	$existsflag = 1;
+        $rand = "";
         $model = $request->input('model');
 
 	//$result = DB::table('users')->insert(['deviceuid' => $model]);
 	//$result = DB::table('users')->insert(var_dump($request));	
 
-	$result = DB::table('users')->where('deviceuid', $model)->exists();
-	if($result == 1){
-            echo "deviceuid exists";
-	}
-	else{
-	    echo "deviceuid DNE";
-	}
+	while($existsflag == 1){
+	    $rand = generateRandomString();
+	    $result = DB::table('users')->where('deviceuid', $rand)->exists();
+	    if($result == 0){
+	        $result = DB::table('users')->insert(['deviceuid' => $rand]);
+		$existsflag = 0;
+	    }
+        }
 
-
-	print_r($result1);
+	return response()->json([
+	    'deviceuid' => $rand
+	]);
     }
 
     public function testcontroller($id)
