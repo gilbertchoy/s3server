@@ -23,4 +23,4 @@ Route::post('/create', 'ApiController@create');
 
 Route::post('/playad', 'ApiController@playad');
 
-Route::post('/adfinished', 'ApiController@adfinished');
+Route::post('/adclosed', 'ApiController@adclosed');

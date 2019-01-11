@@ -35,7 +35,7 @@ class ApiController extends BaseController
     }
 
     public function create(Request $request){
-        function generateRandomString($length = 32) {
+        function generateRandomString($length) {
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $charactersLength = strlen($characters);
             $randomString = '';
@@ -46,24 +46,24 @@ class ApiController extends BaseController
 	}
 
     	$existsflag = 1;
-        $rand = "";
+        $rand32 = "";
+	$rand64 = generateRandomString(64);
         $model = $request->input('model');
 
-	//$result = DB::table('users')->insert(['deviceuid' => $model]);
-	//$result = DB::table('users')->insert(var_dump($request));	
-
 	while($existsflag == 1){
-	    $rand = generateRandomString();
-	    $result = DB::table('users')->where('deviceuid', $rand)->exists();
+	    $rand32 = generateRandomString(32);
+	    $result = DB::table('users')->where('deviceuid', $rand32)->exists();
 	    if($result == 0){
-	        $result = DB::table('users')->insert(['deviceuid' => $rand]);
+	        $result = DB::table('users')->insert(['deviceuid' => $rand32], ['hashkey' => $rand64]);
 		$existsflag = 0;
 	    }
         }
-
+	
 	return response()->json([
-	    'deviceuid' => $rand
+	    'deviceuid' => $rand32,
+	    'hk' => $rand64
 	]);
+
     }
 
     public function testcontroller($id)
