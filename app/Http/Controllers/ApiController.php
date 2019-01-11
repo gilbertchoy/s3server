@@ -14,26 +14,6 @@ use App\Http\Controllers\Controller;
 class ApiController extends BaseController
 {
 
-    public function playad(Request $request)
-    {
-	$data['model'] = 'this is model';
-
-	$user = $request->input('testkey');
-
-	$result = DB::connection('pgsql')->select(DB::raw("insert into users (deviceuid) values ('".$user."')"));
-
-	echo $user;
-
-	return view('playad', $data);
-
-/* works
-	return response()->json([
-    'name' => 'Abigail',
-    'state' => 'CA'
-]);
-*/
-    }
-
     public function create(Request $request){
         function generateRandomString($length) {
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -45,11 +25,16 @@ class ApiController extends BaseController
             return $randomString;
 	}
 
+	$deviceinfo['model'] = $request->input('model');
+	$deviceinfo['brand'] = $request->input('brand');
+	$deviceinfo['device'] = $request->input('device');
+	$deviceinfo['hash'] = $request->input('hash');
+
+	if($deviceinfo['hash'] == sha1($deviceinfo['brand'].".".$deviceinfo['model'].".".$deviceinfo['device'])){
     	$existsflag = 1;
         $rand32 = "";
 	$rand64 = generateRandomString(64);
-        $model = $request->input('model');
-
+        
 	while($existsflag == 1){
 	    $rand32 = generateRandomString(32);
 	    $result = DB::table('users')->where('deviceuid', $rand32)->exists();
@@ -63,7 +48,33 @@ class ApiController extends BaseController
 	    'deviceuid' => $rand32,
 	    'hk' => $rand64
 	]);
+	}
+	else{
+	    abort(403, 'Unauthorized action.');
+	}
 
+    }
+
+    public function playad(Request $request){
+    	$deviceuid = $request->input('deviceuid');
+
+	echo "sha1:" . sha1("1234");
+	/*
+	$hashkey = $request->input('hk');
+        $model = $request->input('model');
+	$brand = $request->input('brand');
+	$device = $request->input('device');
+	$buildid = $request->input('buildid');
+	$manufacturer = $request->input('manufacturer');
+	$user = $request->input('user');
+	$product = $request->input('product');
+	$releaseversion = $request->input('releaseversion');
+	$sdkverstion = $request->input('sdkversion');
+
+	
+
+	$result = DB::table('users')->insert(['deviceuid' => $rand32], ['hashkey' => $rand64]);
+	*/
     }
 
     public function testcontroller($id)
