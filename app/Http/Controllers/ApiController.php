@@ -39,7 +39,7 @@ class ApiController extends BaseController
 	    $rand32 = generateRandomString(32);
 	    $result = DB::table('users')->where('deviceuid', $rand32)->exists();
 	    if($result == 0){
-	        $result = DB::table('users')->insert(['deviceuid' => $rand32], ['hashkey' => $rand64]);
+	        $result = DB::table('users')->insert(['deviceuid' => $rand32, 'hashkey' => $rand64]);
 		$existsflag = 0;
 	    }
         }
