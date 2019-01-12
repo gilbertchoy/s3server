@@ -82,8 +82,6 @@ class ApiController extends BaseController
 	/*
 	    $result = DB::table('transactions')->insertGetId(['deviceuid' => $request->input('deviceuid'), 'userid' => "123",
                         'playad' => "now()"], 'id');
-	    print_r($result);
-	    echo "</br>" . $result;
 	    */
 
 	    $returnhash = sha1($d['deviceuid'].".".$user->hashkey.".".$d['model']);
