@@ -60,13 +60,13 @@ class ApiController extends BaseController
 	
 	print_r($user);
 	
-	if(sha1($r->input('deviceuid').".".$user['hashkey'].".".$r->input('model')) == $r->input('hash')){
-	    $result = DB::table('transactions')->insert(['deviceuid' => $r->input('deviceuid')]);
-	    print_r($result);
+	if((sha1($r->input('deviceuid').".".$user->hashkey.".".$r->input('model'))) == $r->input('hash')){
+	    $result = DB::table('transactions')->insert(['deviceuid' => $r->input('deviceuid'), 'userid' => $user->id]);
 	}
 	else{
-	    $result = DB::table('transactions')->insert(['deviceuid' => "deviceuid");
+	    $result = DB::table('transactions')->insert(['deviceuid' => "deviceuid", 'userid' => "123"]);
 	}
+
 
 	/*
 	$hashkey = $request->input('hk');
