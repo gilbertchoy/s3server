@@ -55,16 +55,32 @@ class ApiController extends BaseController
 
     }
 
-    public function playad(Request $r){
-    	$user = DB::table('users')->select(['id','hashkey'])->where('deviceuid', $r->input('deviceuid'))->first();
+    public function playad(Request $request){
+    	$d['deviceuid'] = $request->input['deviceuid'];
+	$d['model']	= $request->input['model'];
+	$d['brand']	= $request->input['brand'];
+	$d['device']	= $request->input['device'];
+	$d['buildid']	= $request->input['buildid];
+	$d['manufacturer'] = $request->input['manufacturer'];
+	$d['user']	   = $request->input['user'];
+	$d['product']	   = $request->input['product'];
+	$d['releaseversion'] = $request->input['releaseversion'];
+	$d['sdkversion']     = $request->input['sdkversion'];
+
+    	$user = DB::table('users')->select(['id','hashkey'])->where('deviceuid', $d['deviceuid'])->first();
 	
 	print_r($user);
 	
-	if((sha1($r->input('deviceuid').".".$user->hashkey.".".$r->input('model'))) == $r->input('hash')){
-	    $result = DB::table('transactions')->insert(['deviceuid' => $r->input('deviceuid'), 'userid' => $user->id]);
+	if((sha1($d['deviceuid'].".".$user->hashkey.".".$d['model'])) == $d['hash']){
+	    $result = DB::table('transactions')->insert(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
+	    	      	'playad' => "now()", 'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
+			'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
+			'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']]);
 	}
 	else{
-	    $result = DB::table('transactions')->insert(['deviceuid' => "deviceuid", 'userid' => "123"]);
+		$result = DB::table('transactions')->insert(['deviceuid' => $r->input('deviceuid'), 'userid' => "123",
+                        'playad' => "now()"]);
+	    //abort(403, 'Unauthorized action.');
 	}
 
 
