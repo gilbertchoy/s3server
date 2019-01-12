@@ -22,32 +22,32 @@ class ApiController extends BaseController
             for ($i = 0; $i < $length; $i++) {
                 $randomString .= $characters[rand(0, $charactersLength - 1)];
             }
-            return $randomString;
+                return $randomString;
 	}
 
 	$deviceinfo['model'] = $request->input('model');
 	$deviceinfo['brand'] = $request->input('brand');
-	$deviceinfo['device'] = $request->input('device');
+ 	$deviceinfo['device'] = $request->input('device');
 	$deviceinfo['hash'] = $request->input('hash');
 
 	if($deviceinfo['hash'] == sha1($deviceinfo['brand'].".".$deviceinfo['model'].".".$deviceinfo['device'])){
-    	$existsflag = 1;
-        $rand32 = "";
-	$rand64 = generateRandomString(64);
+    	    $existsflag = 1;
+            $rand32 = "";
+	    $rand64 = generateRandomString(64);
         
-	while($existsflag == 1){
-	    $rand32 = generateRandomString(32);
-	    $result = DB::table('users')->where('deviceuid', $rand32)->exists();
-	    if($result == 0){
-	        $result = DB::table('users')->insert(['deviceuid' => $rand32, 'hashkey' => $rand64]);
-		$existsflag = 0;
-	    }
-        }
+	    while($existsflag == 1){
+	        $rand32 = generateRandomString(32);
+	        $result = DB::table('users')->where('deviceuid', $rand32)->exists();
+	        if($result == 0){
+	            $result = DB::table('users')->insert(['deviceuid' => $rand32, 'hashkey' => $rand64]);
+		    $existsflag = 0;
+	        }
+            }
 	
-	return response()->json([
-	    'deviceuid' => $rand32,
-	    'hk' => $rand64
-	]);
+	    return response()->json([
+	        'deviceuid' => $rand32,
+	        'hk' => $rand64
+ 	    ]);
 	}
 	else{
 	    abort(403, 'Unauthorized action.');
@@ -55,10 +55,16 @@ class ApiController extends BaseController
 
     }
 
-    public function playad(Request $request){
-    	$deviceuid = $request->input('deviceuid');
+    public function playad(Request $r){
+    	$user = DB::table('users')->select(['id','hashkey'])->where('deviceuid', $r->input('deviceuid'))->first();
+	
+	print_r($user);
+	
+	if(sha1($r->input('deviceuid').".".$user['hashkey'].".".$r->input('model')) == $r->input('hash')){
+	    $result = DB::table('transactions')->insert(['deviceuid' => $r->input('deviceuid')]);
+	    print_r($result);
+	}
 
-	echo "sha1:" . sha1("1234");
 	/*
 	$hashkey = $request->input('hk');
         $model = $request->input('model');
