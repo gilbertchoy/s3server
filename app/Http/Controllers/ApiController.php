@@ -85,8 +85,10 @@ class ApiController extends BaseController
 	    print_r($result);
 	    echo "</br>" . $result;
 	    */
+
+	    $returnhash = sha1($d['deviceuid'].".".$user->hashkey.".".$d['model']);
 	    return response()->json([
-                'transactinid' => "123"
+                'transactinid' => $returnhash
             ]);
 	    //abort(403, 'Unauthorized action.');
 	    
