@@ -60,7 +60,7 @@ class ApiController extends BaseController
 	$d['model']	= $request->input['model'];
 	$d['brand']	= $request->input['brand'];
 	$d['device']	= $request->input['device'];
-	$d['buildid']	= $request->input['buildid];
+	$d['buildid']	= $request->input['buildid'];
 	$d['manufacturer'] = $request->input['manufacturer'];
 	$d['user']	   = $request->input['user'];
 	$d['product']	   = $request->input['product'];
@@ -68,19 +68,29 @@ class ApiController extends BaseController
 	$d['sdkversion']     = $request->input['sdkversion'];
 
     	$user = DB::table('users')->select(['id','hashkey'])->where('deviceuid', $d['deviceuid'])->first();
-	
-	print_r($user);
-	
-	if((sha1($d['deviceuid'].".".$user->hashkey.".".$d['model'])) == $d['hash']){
-	    $result = DB::table('transactions')->insert(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
+
+	if(!empty($user) && (sha1($d['deviceuid'].".".$user->hashkey.".".$d['model'])) == $d['hash']){
+	    $result = DB::table('transactions')->insertGetId(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
 	    	      	'playad' => "now()", 'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
 			'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
-			'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']]);
+			'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']], 'id');
+	    return response()->json([
+                'transactionid' => $result
+            ]);
 	}
 	else{
-		$result = DB::table('transactions')->insert(['deviceuid' => $r->input('deviceuid'), 'userid' => "123",
-                        'playad' => "now()"]);
+	/*
+	    $result = DB::table('transactions')->insertGetId(['deviceuid' => $request->input('deviceuid'), 'userid' => "123",
+                        'playad' => "now()"], 'id');
+	    print_r($result);
+	    echo "</br>" . $result;
+	    */
+	    return response()->json([
+                'transactinid' => "123"
+            ]);
 	    //abort(403, 'Unauthorized action.');
+	    
+	    
 	}
 
 
