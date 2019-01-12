@@ -64,6 +64,9 @@ class ApiController extends BaseController
 	    $result = DB::table('transactions')->insert(['deviceuid' => $r->input('deviceuid')]);
 	    print_r($result);
 	}
+	else{
+	    $result = DB::table('transactions')->insert(['deviceuid' => "deviceuid");
+	}
 
 	/*
 	$hashkey = $request->input('hk');
