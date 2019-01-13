@@ -7,6 +7,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use \Datetime;
 
 use App\Http\Controllers\Controller;
 
@@ -101,23 +102,41 @@ class ApiController extends BaseController
         $d['releaseversion'] = $request->input('releaseversion');
         $d['sdkversion']     = $request->input('sdkversion');
         $d['hash'] = $request->input('hash');
+	$d['transactionid'] = $request->input('transactionid');
+  
+	function createNewTransaction(){
+	    $result = DB::table('transactions')->insert(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
+                        'adclosed' => "now()", 'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
+                        'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
+                        'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']]);
+	}
 
 	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
-	$hash = sha1($d['deviceuid'].".".$user->hashkey.".".$d['model']);
+	$hash = sha1($d['transactionid'].".".$d['deviceuid'].".".$user->hashkey.".".$d['model']);
+	echo "hash is:" . $hash;
 
-        if(!empty($user) && $hash == $d['hash']){
-            $result = DB::table('transactions')->insertGetId(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
-                        'playad' => "now()", 'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
-                        'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
-                        'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']], 'id');
-            return response()->json([
-                'transactionid' => $result
+/*	
+        if($hash == $d['hash']){
+	    $transaction = DB::table('transactions')->select('id','playad', 'adclosed')->where('deviceuid', $d['deviceuid'])->first();
+	    if(!empty($transaction)){
+	        if(DateTime::createFromFormat('Y-m-d H:i:s.u', $transaction->adclosed) !== FALSE){
+		    createNewTransaction();
+		}
+		else{
+		    DB::table('transaction')->where('id', $transaction->id)->update(['adclosed' => 'now()']);
+		}
+            }
+	    else{
+		createNewTransaction();
+	    }
+	    return response()->json([
+                'transactionid' => "200"
             ]);
-        }
+	}
         else{
             abort(403, 'Unauthorized action.');
         }
-
+*/
     }
 
     public function testcontroller($id)
