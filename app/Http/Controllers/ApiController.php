@@ -89,7 +89,7 @@ class ApiController extends BaseController
 
     public function adclosed(Request $request){
 
-    //working on
+    //working on seems to work local, finish testing
 
         $d['deviceuid'] = $request->input('deviceuid');
         $d['model']     = $request->input('model');
@@ -112,10 +112,13 @@ class ApiController extends BaseController
 	}
 
 	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
+	print_r($d);
+	echo "</br></br>";
+	print_r($user);
 	$hash = sha1($d['transactionid'].".".$d['deviceuid'].".".$user->hashkey.".".$d['model']);
+	echo "</br></br>";
 	echo "hash is:" . $hash;
-
-/*	
+	
         if($hash == $d['hash']){
 	    $transaction = DB::table('transactions')->select('id','playad', 'adclosed')->where('deviceuid', $d['deviceuid'])->first();
 	    if(!empty($transaction)){
@@ -123,7 +126,7 @@ class ApiController extends BaseController
 		    createNewTransaction();
 		}
 		else{
-		    DB::table('transaction')->where('id', $transaction->id)->update(['adclosed' => 'now()']);
+		    DB::table('transactions')->where('id', $transaction->id)->update(['adclosed' => 'now()']);
 		}
             }
 	    else{
@@ -136,7 +139,6 @@ class ApiController extends BaseController
         else{
             abort(403, 'Unauthorized action.');
         }
-*/
     }
 
     public function testcontroller($id)
