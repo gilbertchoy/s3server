@@ -128,7 +128,7 @@ class ApiController extends BaseController
 		}
 		else{
 		    //DB::table('transactions')->where('id', $transaction->id)->update(['adclosed' => 'now()']);
-		    DB::table('transactions')->set('adclosed' => "now()")->where('id', $transaction->id);
+		    //DB::table('transactions')->set('adclosed' => "now()")->where('id', $transaction->id);
 		}
             }
 	    else{
