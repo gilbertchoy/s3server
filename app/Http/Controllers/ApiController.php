@@ -106,9 +106,9 @@ class ApiController extends BaseController
   
 	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
 
-	function createNewTransaction($d,$user){
+	function createNewTransaction($d,$user,$test){
 	    DB::table('transactions')->insert(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
-                        'adclosed' => "now()", 'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
+                        'adclosed' => "now()", 'model' => $test, 'brand' => $d['brand'], 'device' => $d['device'],
                         'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
                         'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']]);
 	}
@@ -124,7 +124,7 @@ class ApiController extends BaseController
 	    $transaction = DB::table('transactions')->select('id','playad', 'adclosed')->where('deviceuid', $d['deviceuid'])->first();
 	    if(!empty($transaction)){
 	        if(DateTime::createFromFormat('Y-m-d H:i:s.u', $transaction->adclosed) !== FALSE){
-		    createNewTransaction($d,$user);
+		    createNewTransaction($d,$user,"test");
 		}
 		else{
 		    //DB::table('transactions')->where('id', $transaction->id)->update(['adclosed' => 'now()']);
@@ -132,7 +132,7 @@ class ApiController extends BaseController
 		}
             }
 	    else{
-		createNewTransaction($d,$user);
+		createNewTransaction($d,$user,"test1");
 	    }
 	    return response()->json([
                 'transactionid' => "200"
