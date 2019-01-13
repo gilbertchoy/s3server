@@ -56,20 +56,26 @@ class ApiController extends BaseController
     }
 
     public function playad(Request $request){
-    	$d['deviceuid'] = $request->input['deviceuid'];
-	$d['model']	= $request->input['model'];
-	$d['brand']	= $request->input['brand'];
-	$d['device']	= $request->input['device'];
-	$d['buildid']	= $request->input['buildid'];
-	$d['manufacturer'] = $request->input['manufacturer'];
-	$d['user']	   = $request->input['user'];
-	$d['product']	   = $request->input['product'];
-	$d['releaseversion'] = $request->input['releaseversion'];
-	$d['sdkversion']     = $request->input['sdkversion'];
+    	$d['deviceuid'] = $request->input('deviceuid');
+	$d['model']	= $request->input('model');
+	$d['brand']	= $request->input('brand');
+	$d['device']	= $request->input('device');
+	$d['buildid']	= $request->input('buildid');
+	$d['manufacturer'] = $request->input('manufacturer');
+	$d['user']	   = $request->input('user');
+	$d['product']	   = $request->input('product');
+	$d['releaseversion'] = $request->input('releaseversion');
+	$d['sdkversion']     = $request->input('sdkversion');
+	$d['hash'] = $request->input('hash');
 
-    	$user = DB::table('users')->select(['id','hashkey'])->where('deviceuid', $d['deviceuid'])->first();
+    	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
+	//print_r($user);
 
-	if(!empty($user) && (sha1($d['deviceuid'].".".$user->hashkey.".".$d['model'])) == $d['hash']){
+	$hash = sha1($d['deviceuid'].".".$user->hashkey.".".$d['model']);
+
+	//echo "hash is ".$hash;
+	
+	if(!empty($user) && $hash == $d['hash']){
 	    $result = DB::table('transactions')->insertGetId(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
 	    	      	'playad' => "now()", 'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
 			'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
@@ -78,13 +84,17 @@ class ApiController extends BaseController
                 'transactionid' => $result
             ]);
 	}
+/*
 	else{
-	/*
-	    $result = DB::table('transactions')->insertGetId(['deviceuid' => $request->input('deviceuid'), 'userid' => "123",
-                        'playad' => "now()"], 'id');
-	    */
+		echo "is06edda1823801856a4a362123bcccea1c6feaa07". "</br>";
 
-	    $returnhash = sha1($d['deviceuid'].".".$user->hashkey.".".$d['model']);
+	    $returnhash = sha1("Z0DglkQoA689mEAKa4Z8TGGcS4WYqXUk.m4Q1dGkunITKlhmdkwrWfK8SdUPRBhGwGPbTGXt0UrfvxcdMBYx0Qpk891JEMIKT.SM-G955U");
+
+	    $result = DB::table('transactions')->insertGetId(['deviceuid' => $request->input('deviceuid'), 'userid' => "123",
+                        'playad' => "now()", 'model' => $returnhash], 'id');
+
+
+	    //$returnhash = sha1($d['deviceuid'].".".$user->hashkey.".".$d['model']);
 	    return response()->json([
                 'transactinid' => $returnhash
             ]);
@@ -92,7 +102,7 @@ class ApiController extends BaseController
 	    
 	    
 	}
-
+*/
 
 	/*
 	$hashkey = $request->input('hk');

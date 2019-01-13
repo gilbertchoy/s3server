@@ -1,7 +1,7 @@
 <?php
 
-//$PGSQL_DATABASE_URL = parse_url("postgres://destructo:pgpgdb1@localhost:5432/destructo");
-$PGSQL_DATABASE_URL = parse_url("postgres://dcmizwkgyyfrcq:33f61e72d907baf3e70409244f7407cee65702072a30e5f6901ce235f2b8db86@ec2-107-20-237-78.compute-1.amazonaws.com:5432/d6i3r0gl0olq83");
+$PGSQL_DATABASE_URL = parse_url("postgres://destructo:pgpgdb1@localhost:5432/destructo");
+//$PGSQL_DATABASE_URL = parse_url("postgres://dcmizwkgyyfrcq:33f61e72d907baf3e70409244f7407cee65702072a30e5f6901ce235f2b8db86@ec2-107-20-237-78.compute-1.amazonaws.com:5432/d6i3r0gl0olq83");
 
 return [
 
