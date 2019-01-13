@@ -104,33 +104,34 @@ class ApiController extends BaseController
         $d['hash'] = $request->input('hash');
 	$d['transactionid'] = $request->input('transactionid');
   
-	function createNewTransaction(){
-	    $result = DB::table('transactions')->insert(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
+	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
+
+	function createNewTransaction($d,$user){
+	    DB::table('transactions')->insert(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
                         'adclosed' => "now()", 'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
                         'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
                         'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']]);
 	}
 
-	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
-	print_r($d);
-	echo "</br></br>";
-	print_r($user);
+	//print_r($d);
+	//echo "</br></br>";
+	//print_r($user);
 	$hash = sha1($d['transactionid'].".".$d['deviceuid'].".".$user->hashkey.".".$d['model']);
-	echo "</br></br>";
-	echo "hash is:" . $hash;
+	//echo "</br></br>";
+	//echo "hash is:" . $hash;
 	
         if($hash == $d['hash']){
 	    $transaction = DB::table('transactions')->select('id','playad', 'adclosed')->where('deviceuid', $d['deviceuid'])->first();
 	    if(!empty($transaction)){
 	        if(DateTime::createFromFormat('Y-m-d H:i:s.u', $transaction->adclosed) !== FALSE){
-		    createNewTransaction();
+		    createNewTransaction($d,$user);
 		}
 		else{
 		    DB::table('transactions')->where('id', $transaction->id)->update(['adclosed' => 'now()']);
 		}
             }
 	    else{
-		createNewTransaction();
+		createNewTransaction($d,$user);
 	    }
 	    return response()->json([
                 'transactionid' => "200"
