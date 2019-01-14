@@ -123,12 +123,12 @@ class ApiController extends BaseController
         if($hash == $d['hash']){
 	    $transaction = DB::table('transactions')->select('id','playad', 'adclosed')->where('deviceuid', $d['deviceuid'])->first();
 	    if(!empty($transaction)){
-	        if(DateTime::createFromFormat('Y-m-d H:i:s.u', $transaction->adclosed) !== FALSE){
+	        if(DateTime::createFromFormat('Y-m-d H:i:s.u', $transaction->playad) !== FALSE){
 		    createNewTransaction($d,$user,"test");
 		}
 		else{
-		    //DB::table('transactions')->where('id', $transaction->id)->update(['adclosed' => 'now()']);
-		    //DB::table('transactions')->set('adclosed' => "now()")->where('id', $transaction->id);
+		    DB::table('transactions')->where('id', $d['transactionid'])->update(['adclosed' => 'now()']);
+		    //DB::table('transactions')->set('adclosed', "now()")->where('id', $transaction->id);
 		}
             }
 	    else{
