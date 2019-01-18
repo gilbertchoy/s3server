@@ -26,12 +26,19 @@ class ApiController extends BaseController
                 return $randomString;
 	}
 
-	$deviceinfo['model'] = $request->input('model');
-	$deviceinfo['brand'] = $request->input('brand');
- 	$deviceinfo['device'] = $request->input('device');
-	$deviceinfo['hash'] = $request->input('hash');
+	$d['deviceuid'] = $request->input('deviceuid');
+        $d['model']     = $request->input('model');
+        $d['brand']     = $request->input('brand');
+        $d['device']    = $request->input('device');
+        $d['buildid']   = $request->input('buildid');
+        $d['manufacturer'] = $request->input('manufacturer');
+        $d['user']         = $request->input('user');
+        $d['product']      = $request->input('product');
+        $d['releaseversion'] = $request->input('releaseversion');
+        $d['sdkversion']     = $request->input('sdkversion');
+        $d['hash'] = $request->input('hash');
 
-	if($deviceinfo['hash'] == sha1($deviceinfo['brand'].".".$deviceinfo['model'].".".$deviceinfo['device'])){
+	if($deviceinfo['hash'] == sha1($d['brand'].".".$d['model'].".".$d['device'])){
     	    $existsflag = 1;
             $rand32 = "";
 	    $rand64 = generateRandomString(64);
@@ -40,7 +47,12 @@ class ApiController extends BaseController
 	        $rand32 = generateRandomString(32);
 	        $result = DB::table('users')->where('deviceuid', $rand32)->exists();
 	        if($result == 0){
-	            $result = DB::table('users')->insert(['deviceuid' => $rand32, 'hashkey' => $rand64]);
+	            //$result = DB::table('users1')->insert(['deviceuid' => $rand32, 'hashkey' => $rand64]);
+		    $result = DB::table('users1')->insert(['deviceuid' => $rand32, 'hashkey' => $rand64,
+                        'model' => $d['model'], 'brand' => $d['brand'], 'device' => $d['device'],
+                        'buildid' => $d['buildid'], 'manufacturer' => $d['manufacturer'], 'user' => $d['user'], 'product' => $d['product'],
+                        'releaseversion' => $d['releaseversion'], 'sdkversion' => $d['sdkversion']]);
+		    
 		    $existsflag = 0;
 	        }
             }
