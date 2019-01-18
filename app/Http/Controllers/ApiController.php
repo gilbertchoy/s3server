@@ -81,7 +81,7 @@ class ApiController extends BaseController
 	$d['sdkversion']     = $request->input('sdkversion');
 	$d['hash'] = $request->input('hash');
 
-    	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
+    	$user = DB::table('users1')->where('deviceuid', $d['deviceuid'])->first();
 	$hash = sha1($d['deviceuid'].".".$user->hashkey.".".$d['model']);
 	
 	if(!empty($user) && $hash == $d['hash']){
@@ -116,7 +116,7 @@ class ApiController extends BaseController
         $d['hash'] = $request->input('hash');
 	$d['transactionid'] = $request->input('transactionid');
   
-	$user = DB::table('users')->where('deviceuid', $d['deviceuid'])->first();
+	$user = DB::table('users1')->where('deviceuid', $d['deviceuid'])->first();
 
 	function createNewTransaction($d,$user,$test){
 	    DB::table('transactions')->insert(['deviceuid' => $d['deviceuid'], 'userid' => $user->id,
