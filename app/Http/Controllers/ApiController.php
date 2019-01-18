@@ -38,7 +38,10 @@ class ApiController extends BaseController
         $d['sdkversion']     = $request->input('sdkversion');
         $d['hash'] = $request->input('hash');
 
-	if($deviceinfo['hash'] == sha1($d['brand'].".".$d['model'].".".$d['device'])){
+	//echo "hash is:".sha1($d['brand'].".".$d['model'].".".$d['device']);
+
+
+	if($d['hash'] == sha1($d['brand'].".".$d['model'].".".$d['device'])){
     	    $existsflag = 1;
             $rand32 = "";
 	    $rand64 = generateRandomString(64);
@@ -65,6 +68,7 @@ class ApiController extends BaseController
 	else{
 	    abort(403, 'Unauthorized action.');
 	}
+
 
     }
 
