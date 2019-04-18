@@ -30,6 +30,8 @@ Route::get('/teststring/{id}/comment/{comment}', function ($id, $comment) {
 //works id is required
 Route::get('testicles/{id}', 'ApiController@testcontroller');
 
-
+Route::get('test1', function () {
+    return view('test1');
+});
 
 
