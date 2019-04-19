@@ -38,4 +38,6 @@ Route::get('privacypolicy', function () {
     return view('privacypolicy');
 });
 
-
+Route::get('privacypolicyadwatcher', function () {
+    return view('privacypolicyadwatcher');
+});

@@ -31,7 +31,11 @@ Route::get('/teststring/{id}/comment/{comment}', function ($id, $comment) {
 Route::get('testicles/{id}', 'ApiController@testcontroller');
 
 Route::get('test1', function () {
-    return view('welcome');
+    return view('test1');
+});
+
+Route::get('privacypolicy', function () {
+    return view('privacypolicy');
 });
 
 
